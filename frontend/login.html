@@ -27,38 +27,52 @@
 
 <script>
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://blessyloginpage.onrender.com";
 
 async function login() {
 
-    const email = document.getElementById("email").value;
+    try {
 
-    const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
 
-    const res = await fetch(`${API_URL}/api/auth/login`, {
+        const password = document.getElementById("password").value;
 
-        method: "POST",
+        const res = await fetch(`${API_URL}/api/auth/login`, {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+            method: "POST",
 
-        body: JSON.stringify({
-            email,
-            password
-        })
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-    });
+            body: JSON.stringify({
+                email,
+                password
+            })
 
-    const data = await res.json();
+        });
 
-    document.getElementById("message").innerText = data.message;
+        const data = await res.json();
 
-    if(data.success){
+        console.log(data);
 
-        localStorage.setItem("user", JSON.stringify(data.user));
+        document.getElementById("message").innerText = data.message;
 
-        window.location.href = "dashboard.html";
+        if (res.ok) {
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            alert("Login successful");
+
+            window.location.href = "dashboard.html";
+
+        }
+
+    } catch (err) {
+
+        console.log(err);
+
+        alert("Server error");
 
     }
 
